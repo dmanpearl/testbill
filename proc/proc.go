@@ -6,9 +6,9 @@ type result struct {
 }
 
 func Process(vals []int, groupSize int) []result {
-	var results []result
 	// Generate the sum of each group of groupSize values. indicate groups that could not satisfy the groupSize quantity.
 	groups := (len(vals) + groupSize - 1) / groupSize
+	results := make([]result, groups)
 	for group := 0; group < groups; group++ {
 		i := group * 3
 		sum := 0
@@ -20,7 +20,7 @@ func Process(vals []int, groupSize int) []result {
 			}
 			sum += vals[i+j]
 		}
-		results = append(results, result{Sum: sum, Whole: whole})
+		results[group] = result{Sum: sum, Whole: whole}
 	}
 	return results
 }
