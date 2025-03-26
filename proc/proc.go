@@ -5,22 +5,19 @@ type result struct {
 	Whole bool
 }
 
+// Generate the sum of each group of groupSize values.
+// Indicate groups that could not satisfy the groupSize quantity with 'whole = False'.
 func Process(vals []int, groupSize int) []result {
-	// Generate the sum of each group of groupSize values. indicate groups that could not satisfy the groupSize quantity.
 	groups := (len(vals) + groupSize - 1) / groupSize
 	results := make([]result, groups)
-	for group := 0; group < groups; group++ {
-		i := group * 3
-		sum := 0
-		whole := true
-		for j := 0; j < groupSize; j++ {
-			if i+j >= len(vals) {
-				whole = false
-				break
-			}
-			sum += vals[i+j]
+	sum := 0
+	for i, val := range vals {
+		groupIdx := i / groupSize
+		if groupIdx*groupSize == i {
+			sum = 0 // New group
 		}
-		results[group] = result{Sum: sum, Whole: whole}
+		sum += val
+		results[groupIdx] = result{Sum: sum, Whole: i == groupSize*(groupIdx+1)-1}
 	}
 	return results
 }
